@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+{% block contents %}
+
+
+{% load crispy_forms_tags %}
+<div class='row d-flex justify-content-center p-5 mt-5'>
+
+
+    <form style='width:50%' class='bg-dark text-light p-5' method="POST" action="">
+
+        <h2 class="text-center mt-2">User Log in</h2>
+
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        {% for f in form.non_field_errors %}
+        <div class='bg-danger text-light'>{{f}}</div>
+        {% endfor %}
+        {% endif %}
+        <!-- {{form|crispy}} -->
+        {% for f in form %}
+        {{f.label_tag }}
+        {{f}}
+        {{f.errors|striptags}}
+        {% endfor %}  
+        <div class="row d-flex justify-content-center mt-4" >
+            <input class="btn btn-outline-dark bg-primary" type="submit" value="Login">
+        </div>
+     
+
+    </form>
+</div>
+
+{% endblock %}

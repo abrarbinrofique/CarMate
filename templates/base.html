@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>CARMET</title>
+  </head>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">CARMET</a>
+      <button class="navbar-toggler text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse text-light" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active text-light" aria-current="page" href="{% url 'home' %}">Home</a>
+          </li>
+          {% if request.user.is_superuser %}
+          <li class="nav-item text-light">
+            <a class="nav-link" href="{% url 'companyname' %}">Add Company</a>
+          </li>
+          <li class="nav-item text-light">
+            <a class="nav-link" href="{% url 'modelname' %}" tabindex="-1" aria-disabled="true">Add new model</a>
+          </li>
+          {% endif %}
+        </ul>
+        <form class="d-flex">
+          {% if user.is_authenticated %}
+          <a href="{% url 'profile' %}" type='submit' class="btn btn-outline-light bg-warning m-1">Profile </a>
+          <a href="{% url 'logout' %}" type='submit' class="btn btn-outline-light bg-danger m-1">Logout </a>
+           {% else %}
+           <a href="{% url 'signup' %}" type='submit' class="btn btn-outline-light bg-success m-1">Signup </a>
+           <a href="{% url 'login' %}" type='submit' class="btn btn-outline-light bg-secondary m-1">Login </a>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </nav>
+  {% if message %}
+  {% for i in message %}
+
+  <div class='bg-success text-light text-center'>{{i}}</div>
+  {% endfor %}
+  {% endif %}
+  
+    
+
+  
+    <body>
+
+      {% block contents %}
+      {% load static %}
+   <div class='row d-flex justify-content-center m-3 p-4 bg-dark'>
+    <h3 class='text-center text-light'> CARMET</h3>
+    <p class='text-center text-light ml-5'>Your ultimate car solution</p>
+
+    <div class='col-lg-5 col-md-5 col-sm-12'>
+
+     
+      <p class='text-light mt-5'>Welcome to CarMet, your ultimate destination for buying and selling quality cars.
+         At CarMet, we understand that purchasing a car is a significant milestone, whether it's your first vehicle or an upgrade. Our platform offers a seamless and enjoyable experience, connecting you with a wide range of car models from trusted brands. 
+         Browse through our extensive collection, read detailed descriptions, view high-resolution images, and make informed decisions with ease. Our user-friendly interface ensures that finding your perfect car is just a few clicks away.
+          Experience the convenience, reliability, and excellence of CarMet 
+        – where your dream car is waiting for you.</p>
+
+
+    </div>
+
+    <div  class='col-lg-6 col-md-5 col-sm-12 p-5 m-5 mt-1'>
+   <img style="width:70%; height:90%;margin-left:300px" src="{% static 'carimage.jpg' %}">
+
+   </div>
+  </div>
+
+   
+  
+  <div class='row d-flex justify-content-center'>
+
+    <a href="{% url 'login' %}" type='submit' style="width:20%;text-decoration:None" class="btn btn-outline-light text-dark bg-warning m-1">Admin Mania! </a>
+    <a href="{% url 'signup' %}" type='submit' style="width:20%;text-decoration:None" class="btn btn-outline-light text-dark bg-info m-1">Explore Carmate?</a>
+   
+   </div>
+
+  <div class='row d-flex'>
+    
+    
+    <div  class='col-lg-2 col-md-3 col-sm-12 mt-5 bg-dark m-5'>
+      <h2 class='text-dark text-center bg-warning m-4'> Choose your Ride </h2>
+
+      {% if data %}
+
+      {% for i in data %}
+
+      <a style="text-decoration:None" href="{% url  'company_wise_car' i.slug %}"><div class='bg-warning text-dark  border border-light text-center m-5'>{{i}}
+      </div>
+       
+      </a>
+
+      {% endfor %}
+
+      {% endif %}
+
+
+    </div>
+
+    <div class="col-lg-1 col-md-1 col-sm-1">
+
+    <button class="btn btn-dark mt-5">  {{car|length}} results found </button>
+
+    </div>
+
+     
+
+    <div class="row d-flex justify-content-center col-lg-8 col-md-7 col-sm-12 p-1 m-1">
+      {% if car %}
+
+      {% for i in car %}
+      <div class="card m-1" style="width:30%;">
+        {% if i.image %}
+        <img src={{i.image.url}} class="card-img-top" alt="...">
+        {% endif %}
+      
+        <div class="card-body">
+        <h5 class="card-title"><b> Model:</b>{{i.Name}}</h5>
+        <h5 class="card-title"><b> Company:</b>{{i.Brandname}}</h5>
+         <h5 class="card-title"><b>Price:</b>{{i.Price}}$</h5>
+         <h5 class="card-title"> <b> Quantity:</b>{{i.Quantity}}</h5>
+        <p class="card-text">{{i.Description|truncatewords:10}}</p>
+        
+        <a href="{% url 'modeldetails' i.id %}" class="btn btn-outline-success">Details</a>
+        {% if user.is_authenticated %} 
+        <a href="{% url 'modelbuy' i.id  %}" class="btn btn-outline-danger">Buy</a>
+        {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+
+    </div>
+   
+
+  
+  </div>
+
+
+ 
+    {% endblock%}
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>

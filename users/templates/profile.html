@@ -1,0 +1,97 @@
+
+{% extends "base.html" %}
+
+{% block contents %} 
+
+
+<section class="">
+  <div class="mt-2">
+    <div class="row d-flex justify-content-center">
+      <div class="col col-lg-9 col-xl-8">
+        <div class="card">
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:210px;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px; height:150px">
+              <img src=""
+                alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                style="width: 150px; z-index: 1">
+            </div>
+            <div class="ms-3" style="margin-top: 130px;">
+              <h5> {{request.user.first_name}} {{request.user.last_name}}</h5>
+              <p>@{{request.user.username}}</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+            <p class="lead fw-normal m-5">Your purchase List </p>
+            
+         </div>
+         <div class="row d-flex justify-content-center col-lg-12 col-md-12 col-sm-12 p-1 m-1">
+              {% if choicecar %}
+              <button class="btn btn-dark mt-5">  {{choicecar|length}} car's yoou are added in your cart </button>
+
+              
+                {% for i in choicecar %}
+
+                {% if i.car.image %}
+                <div class="card p-4 m-2" style="width:40%;">
+                 <img src={{i.car.image.url}} class="card-img-top" alt="..."> 
+               {% endif %} 
+              
+                <div class="card-body">
+               <h5 class="card-title"><b> Model:</b>{{i.car.Name}}</h5>
+                <h5 class="card-title"><b> Company:</b>{{i.car.Brandname}}</h5>
+                 <h5 class="card-title"><b>Price:</b>{{i.car.Price}}$</h5>
+                 <h5 class="card-title"><b>Quantity:</b>{{i.Purchace_count}}</h5>
+                <p class="card-text">{{i.car.Description}}</p>
+              </div>
+                </div>
+                {% endfor %}
+             
+              
+              {%else%}
+              <h3>You  Don't Buy yet </h3>
+              {% endif %}
+              
+              
+                 
+
+
+            </div>
+            
+
+         
+          
+            
+          <div style='margin:100px;' class='d-flex flex-wrap justify-content-center  p-100px'>
+
+
+          
+
+
+
+
+
+
+
+         
+          
+        
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+

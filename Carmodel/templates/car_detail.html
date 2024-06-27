@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block contents %}
+<div class="row d-flex justify-content-center m-5 p-5">
+  <img
+    style="width: 50%; height: 60%"
+    src="{{car.image.url}}"
+    class="card-img-top text-center"
+    alt="..."
+  />
+  <p class="card-text text-center mt-4">{{car.Description}}</p>
+  <h5 class="card-title text-center"><b> Model:</b>{{car.Name}}</h5>
+  <h5 class="card-title text-center"><b> Company:</b>{{car.Brandname}}</h5>
+  <h5 class="card-title text-center"><b>Price:</b>{{car.Price}}$</h5>
+  <h5 class="card-title text-center"><b> Quantity:</b>{{car.Quantity}}</h5>
+</div>
+
+<div class="row d-flex justify-content-center">
+  {% if comments %}
+  <div class="row d-flex justify-content-center col-lg-4 col-md-12 col-sm-12 p-5 m-5 bg-dark"
+  >
+   {% for i in comments %}
+    <div class="border border-info bg-dark text-light">
+      <p>{{i.text}}</p>
+      <p></p>
+      <p>{{i.name}},{{i.createdat}}</p>
+    </div>
+    {% endfor %} 
+  </div>
+  {% endif %}
+  
+  <div
+    class="col-lg-5 col-md-12 col-sm-12 p-3 mt-5"
+  >
+    {% load crispy_forms_tags %}
+
+    <form
+      style="width: 80%"
+      class="bg-dark text-light p-5"
+      method="POST"
+      action=""
+    >
+      <h2 class="text-center mt-2">Add your comment</h2>
+
+      {% csrf_token %} {% if commentsform.non_field_errors %} 
+      {% for f in commentsform.non_field_errors %}
+      <div class="bg-danger text-light">{{f}}</div>
+      {% endfor %} {% endif %}
+      <!-- {{commentsform|crispy}} -->
+      {% for f in commentsform %} {{f.label_tag }} {{f}} {{f.errors|striptags}}
+      {% endfor %}
+
+      <div class="row d-flex justify-content-center mt-4">
+        <input
+          class="btn btn-outline-dark bg-primary"
+          type="submit"
+          value="send"
+        />
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
