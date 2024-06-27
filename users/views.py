@@ -16,6 +16,7 @@ def signupform(request):
         form=adduser(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'you successfully add your account,now login here!')
             return redirect('login')
         
     
@@ -64,6 +65,7 @@ class logoutform(LogoutView):
     template_name='logout.html'
 
     def get_success_url(self):
+      messages.success(self.request,'Logout Successfully')
       return reverse_lazy('login')
     
 
@@ -98,6 +100,7 @@ def modelbuy(request,id):
         else:
              purchasecar.Purchace_count=purchasecar.Purchace_count+1
              purchasecar.save()
+        messages.success(request,f'congratulations mr {request.user.username}! you purchase the car successfully')
         return redirect('profile') 
     else:
         messages.warning(request,'The car isn''t available right now')
